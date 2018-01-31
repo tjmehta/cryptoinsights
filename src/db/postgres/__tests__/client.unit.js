@@ -1,6 +1,6 @@
 jest.unmock('db/postgres/client')
 
-import { Client } from 'pg'
+import { Client, Pool } from 'pg'
 
 import trim from 'utils/multiline-trim'
 import { PostgresClient } from 'db/postgres/client'
@@ -16,10 +16,7 @@ describe('PostgresClient Unit Tests', () => {
       const postgres = new PostgresClient()
       await postgres.connect()
       expect(postgres).toHaveProperty('pool')
-      expect(postgres.pool.connect).toHaveBeenCalled()
-      // I can't get "mock.instances" to work properly w/ jest
-      // so this will have to do..
-      expect(Client.prototype.release).toHaveBeenCalled()
+      expect(postgres.pool).toBeInstanceOf(Pool)
     })
   })
 

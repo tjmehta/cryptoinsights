@@ -24,9 +24,6 @@ export class PostgresClient {
         user: process.env.PGUSER,
         password: process.env.PGPASSWORD,
       })
-      // warm up the pool?
-      const client = await this.pool.connect()
-      client.release()
     }
     return this.pool
   }
