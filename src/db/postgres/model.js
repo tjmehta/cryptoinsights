@@ -1,9 +1,15 @@
 // @flow
+import snakeCase from 'snake-case'
 import reduce from 'object-loops/reduce'
 
 import postgresClient from 'db/postgres/client'
 
-export default class PostgresModel {
+export default class PostgresModel<
+  QueryDataType = {},
+  CreateDataType = {},
+  UpdateQueryDataType = {},
+  UpdateDataType = {},
+> {
   constructor(table?: string) {
     this.table =
       table || this.constructor.name.replace(/Model$/, '').toLowerCase()
@@ -19,7 +25,7 @@ export default class PostgresModel {
       obj,
       (str, val, key) => {
         return str
-          ? `${str}${delimeter}${key} = ${this.valToString(val)}`
+          ? `${str}${delimeter}${snakeCase(key)} = ${this.valToString(val)}`
           : `${key} = ${this.valToString(val)}`
       },
       '',
@@ -31,7 +37,7 @@ export default class PostgresModel {
   static updateToString(update: {}) {
     return this.objToString(update, '\n,  ')
   }
-  async create(data: {}) {
+  async create(data: CreateDataType & {}) {
     const keys = Object.keys(data)
     const keysStr = keys.toString()
     const valsStr = keys
@@ -45,7 +51,16 @@ export default class PostgresModel {
     const result = await postgresClient.query(query)
     return result.rows[0]
   }
-  async list(conditions: {}) {
+  async get(conditions: QueryDataType & {}) {
+    const results = await this.list(conditions)
+    return results[0]
+  }
+  async getOrCreate(conditions: QueryDataType & {}, data: CreateDataType & {}) {
+    const result = await this.get(conditions)
+    if (result) return result
+    return await this.create(data)
+  }
+  async list(conditions: QueryDataType & {}) {
     const query = `
       SELECT *
       FROM ${this.table}
@@ -55,7 +70,10 @@ export default class PostgresModel {
     const result = await postgresClient.query(query)
     return result.rows
   }
-  async update(conditions: {}, update: {}) {
+  async update(
+    conditions: UpdateQueryDataType & {},
+    update: UpdateDataType & {},
+  ) {
     const query = `
       UPDATE ${this.table}
       SET

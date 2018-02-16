@@ -19,17 +19,23 @@
     "assert-env": "^0.6.0",
     "db": "^1.0.6",
     "dotenv": "^4.0.0",
+    "error-to-json": "^1.1.0",
+    "lugg": "github:tjmehta/lugg#patch-1",
     "multitrim": "^2.0.0",
     "object": "^0.1.1",
     "object-loops": "^0.8.0",
     "pg": "^7.4.1",
+    "pino": "^4.10.4",
+    "promise-props": "^1.0.0",
     "r2": "^2.0.0",
+    "snake-case": "^2.1.0",
     "sql-template-strings": "^2.2.2",
     "utils": "^0.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
     "babel-jest": "^22.1.0",
     "babel-plugin-inline-dotenv": "^1.1.2",
     "babel-plugin-module-resolver": "^3.0.0",
@@ -37,6 +43,8 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-jest": "^22.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "flow-bin": "^0.63.1",
     "husky": "^0.14.3",
     "jest": "^22.1.4",
@@ -72,6 +80,7 @@
     "moduleRoot": "src"
   },
   "eslintConfig": {
+    "parser": "babel-eslint",
     "extends": [
       "plugin:prettier/recommended"
     ]

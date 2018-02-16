@@ -13,6 +13,14 @@ import { Pool } from 'pg'
 import PostgresError from 'db/postgres/error'
 import trim from 'utils/multiline-trim'
 
+type PoolOptsType = {
+  database: string,
+  host: string,
+  port: string,
+  user: string,
+  password: string,
+}
+
 export class PostgresClient {
   pool: Pool
   async connect(): Promise<Pool> {

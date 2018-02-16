@@ -1,9 +1,7 @@
 // @flow
 
-import exists from '101/exists'
-
 export default class Cron {
-  constructor(job: function, intervalTime: number) {
+  constructor(job: Function, intervalTime: number) {
     this.currentJob = null
     this.intervalId = null
     this.intervalTime = intervalTime
@@ -15,7 +13,7 @@ export default class Cron {
   intervalId: ?IntervalID
   job: Function
   start() {
-    if (exists(this.intervalId)) return console.warn('cron already running!')
+    if (this.intervalId != null) return console.warn('cron already running!')
     // start interval
     this.intervalId = setInterval(() => this.runJob(), this.intervalTime)
     // call immediately
@@ -29,8 +27,8 @@ export default class Cron {
     }
   }
   stop() {
-    if (!exists(this.intervalId)) return console.warn('cron already stopped!')
+    if (this.intervalId == null) return console.warn('cron already stopped!')
     clearInterval(this.intervalId)
-
+    this.intervalId = null
   }
 }
